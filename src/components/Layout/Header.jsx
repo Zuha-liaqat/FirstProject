@@ -11,6 +11,9 @@ import {
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+  
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.role === "admin";
 
   function logout() {
     localStorage.removeItem("token");
@@ -30,9 +33,10 @@ export default function Header() {
 
         {/* Navigation Links (Desktop) */}
         <div className="hidden md:flex gap-6 font-semibold">
-          <NavLink to="/admin/home">Home</NavLink>
-          <NavLink to="/admin/users">About</NavLink>
-          <NavLink to="/admin/verses">Contact</NavLink>
+          <NavLink to="/app/home">Home</NavLink>
+          <NavLink to="/app/about">About</NavLink>
+          <NavLink to="/app/contact">Contact</NavLink>
+          
         </div>
 
         {/* Right Side: Profile + Logout */}

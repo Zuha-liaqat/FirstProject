@@ -31,10 +31,11 @@ export default function LoginForm() {
         const data = await res.json();
         console.log("Registered:", data);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         alert("login successfully!");
 
         resetForm();
-       navigate("/app");
+       navigate("/app/home");
       } catch (err) {
         console.error(err);
         alert("Something went wrong!");
