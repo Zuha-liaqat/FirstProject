@@ -19,7 +19,7 @@ const FoodList = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/api/v1/food/list?page=${page}&limit=5`,
+        `${API_URL}/food/list?page=${page}&limit=5`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,7 +49,7 @@ const FoodList = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:3000/api/v1/food/delete/${id}`,
+        `${API_URL}/food/delete/${id}`,
         {
           method: "DELETE",
           headers: {

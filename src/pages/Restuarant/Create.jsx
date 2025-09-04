@@ -14,7 +14,7 @@ const CreateRestaurant = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:3000/api/v1/food/create",
+        `${API_URL}/food/create`,
         {
           method: "POST",
           headers: {

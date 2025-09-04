@@ -16,7 +16,7 @@ const UpdateFood = () => {
   useEffect(() => {
     const fetchFood = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/v1/food/get/${id}`);
+        const res = await fetch(`${API_URL}/food/get/${id}`);
         const data = await res.json();
         if (data.success) {
           setFormData({
@@ -52,7 +52,7 @@ const UpdateFood = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:3000/api/v1/food/update/${id}`,
+        `${API_URL}/food/update/${id}`,
         {
           method: "PUT",
           headers: {

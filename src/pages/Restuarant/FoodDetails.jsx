@@ -16,7 +16,7 @@ const FoodDetails = () => {
     const fetchRestaurantById = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/food/get/${id}`
+          `${API_URL}/food/get/${id}`
         );
         const data = await response.json();
 

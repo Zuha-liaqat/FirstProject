@@ -25,7 +25,7 @@ const CartPage = () => {
       const user = JSON.parse(localStorage.getItem("user"));
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:3000/api/v1/food/placeorder", {
+      const res = await fetch(`${API_URL}/food/placeorder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
