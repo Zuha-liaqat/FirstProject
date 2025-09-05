@@ -5,6 +5,7 @@ const CreateRestaurant = () => {
   const [imageurl, setImageurl] = useState("");
   const [rating, setRating] = useState("");
   const [message, setMessage] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

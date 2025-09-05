@@ -13,7 +13,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const [orderPlaced, setOrderPlaced] = useState(false);
   const navigate = useNavigate(); // 👈 yahan hook use karo
-
+  const API_URL = import.meta.env.VITE_API_URL;
   // total price calculate with quantity
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,

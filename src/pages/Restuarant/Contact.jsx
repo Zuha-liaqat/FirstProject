@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export default function ContactForm() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
   
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

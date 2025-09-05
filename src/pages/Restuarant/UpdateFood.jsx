@@ -11,8 +11,9 @@ const UpdateFood = () => {
     imageurl: "",
   });
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  // 🔹 Fetch food by id
+ 
   useEffect(() => {
     const fetchFood = async () => {
       try {
