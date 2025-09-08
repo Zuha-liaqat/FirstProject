@@ -1,54 +1,58 @@
 import { useSelector, useDispatch } from "react-redux";
 import {
-  removeFromCart,
+  
   clearCart,
+  removeFromCart,
   increaseQuantity,
-  decreaseQuantity,
+  decreaseQuantity
 } from "../../redux/cartSlice";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 yeh import add karo
+import { useNavigate } from "react-router-dom"; 
+
 
 const CartPage = () => {
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector((state) => state.cart?.items || []);
+  const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const navigate = useNavigate(); // 👈 yahan hook use karo
+  const navigate = useNavigate(); 
   const API_URL = import.meta.env.VITE_API_URL;
-  // total price calculate with quantity
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
+  
+ 
+const totalPrice = cartItems.reduce(
+  (total, item) => total + item.price * item.quantity,
+  0
+);
   const handlePlaceOrder = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    
 
-      const res = await fetch(`${API_URL}/food/placeorder`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          cart: cartItems.map((item) => item.id), // sirf IDs
-          payment: "cash",
-          id: user?._id,
-        }),
-      });
+    const res = await fetch(`${API_URL}/food/placeorder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        cart: cartItems.map((item) => item.id),
+        payment:totalPrice,
+        id: user?._id,
+        email: user?.email, // ✅ email bhejna
+      }),
+    });
 
-      const data = await res.json();
-      if (data.success) {
-        setOrderPlaced(true); // UI update
-        dispatch(clearCart()); // cart empty
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.error("Order error", error);
+    const data = await res.json();
+    if (data.success) {
+      setOrderPlaced(true); // UI update
+      dispatch(clearCart()); // cart empty
+    } else {
+      alert(data.message);
     }
-  };
+  } catch (error) {
+    console.error("Order error", error);
+  }
+};
 
   // ✅ Agar order placed ho gaya
   if (orderPlaced) {
@@ -101,9 +105,9 @@ const CartPage = () => {
           />
           <div className="flex-1">
             <h2 className="font-semibold">{item.title}</h2>
-            <p className="text-gray-600">Price: ${item.price}</p>
+            <p className="text-gray-600">Price: Rs.{item.price}</p>
             <p className="text-gray-600">
-              Subtotal: ${item.price * item.quantity}
+              Subtotal: Rs.{item.price * item.quantity}
             </p>
           </div>
 
@@ -135,7 +139,7 @@ const CartPage = () => {
 
       {/* Total & Clear Cart */}
       <div className="mt-6 flex justify-between items-center">
-        <h2 className="text-xl font-bold">Total: {totalPrice} Rs</h2>
+        <h2 className="text-xl font-bold">Total: Rs.{totalPrice} </h2>
         <button
           onClick={() => dispatch(clearCart())}
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"

@@ -16,7 +16,7 @@ export default function Header() {
   const isAdmin = user?.role === "admin";
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     navigate("/login");
   }
 

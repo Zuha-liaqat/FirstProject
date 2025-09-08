@@ -51,7 +51,7 @@ const UpdateFood = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
       const res = await fetch(
         `${API_URL}/food/update/${id}`,
         {

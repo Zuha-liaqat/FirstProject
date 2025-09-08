@@ -1,12 +1,24 @@
 import React from "react";
+import { useDispatch,useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { setUser } from "../../redux/authSlice";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function LoginForm() {
   const navigate= useNavigate()
+  const dispatch = useDispatch()
+
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    navigate("/app/home");
+  }
+}, [navigate]);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -20,7 +32,7 @@ export default function LoginForm() {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        const res = await fetch(`${API_URL}/auth/login`, {
+        const res = await fetch(`http://localhost:3000/api/v1/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           
@@ -30,8 +42,10 @@ export default function LoginForm() {
         if (!res.ok) throw new Error("Failed to login");
         const data = await res.json();
         console.log("Registered:", data);
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("user", JSON.stringify(data.user));
+        dispatch(setUser({token:data.accessToken,user:data.user}))
         alert("login successfully!");
 
         resetForm();

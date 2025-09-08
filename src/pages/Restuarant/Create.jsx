@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector} from "react-redux";
 
 const CreateRestaurant = () => {
   const [title, setTitle] = useState("");
@@ -6,6 +7,7 @@ const CreateRestaurant = () => {
   const [rating, setRating] = useState("");
   const [message, setMessage] = useState("");
   const API_URL = import.meta.env.VITE_API_URL;
+  const token = useSelector((state) => state.auth.token);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +15,7 @@ const CreateRestaurant = () => {
     const data = { title, imageurl,rating };
 
     try {
-      const token = localStorage.getItem("token");
+      
       const response = await fetch(
         `${API_URL}/food/create`,
         {

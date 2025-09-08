@@ -60,7 +60,7 @@ const FoodDetails = () => {
             alt={restaurant.title}
             className="w-full h-96 object-cover rounded-md mb-4"
           />
-          <p className="mb-2">Price: ${restaurant.price}</p>
+          <p className="mb-2">Price: Rs.{restaurant.price}</p>
           <p className="mb-4">{restaurant.description}</p>
 
           <button

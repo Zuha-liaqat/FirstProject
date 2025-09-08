@@ -2,11 +2,20 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function RegisterForm() {
   const navigate= useNavigate()
+
+
+useEffect(() => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    navigate("/app/home");
+  }
+}, [navigate]);
   const formik = useFormik({
     initialValues: {
       name: "",
