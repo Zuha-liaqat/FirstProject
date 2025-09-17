@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { User } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -9,6 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function EditProfilePage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+   const { id } = useParams();
 
   const formik = useFormik({
     initialValues: { name: "" },
@@ -17,8 +18,8 @@ export default function EditProfilePage() {
     }),
     onSubmit: async (values) => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${API_URL}/user/update-user`, {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(`${API_URL}/user/update-user/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +32,7 @@ export default function EditProfilePage() {
         await res.json();
 
         alert("Profile updated successfully!");
-        navigate("/app/profile");
+        navigate(`/app/profile/${id}`);
       } catch (err) {
         console.error(err);
         alert("Error updating profile!");
@@ -42,8 +43,8 @@ export default function EditProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`${API_URL}/user/get-user`, {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(`http://localhost:3000/api/v1/user/get-user/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -116,7 +117,7 @@ export default function EditProfilePage() {
             </button>
             <button
               type="button"
-              onClick={() => navigate("/app/profile")}
+              onClick={() => navigate(`/app/profile/${id}`)}
               className="w-full bg-gray-400 text-white font-semibold py-2.5 rounded-lg hover:bg-gray-500 transition"
             >
               Cancel

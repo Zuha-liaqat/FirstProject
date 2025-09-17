@@ -6,12 +6,13 @@ import EditProfilePage from "../pages/auth/EditProfile";
 import CreateRestaurant from "../pages/Restuarant/Create";
 import FoodDetails from "../pages/Restuarant/FoodDetails";
 import FoodList from "../pages/Restuarant/FoodList";
-
+import UserList from "../pages/Restuarant/UserList";
 import CartPage from "../pages/Restuarant/CartPage";
 import UpdateFood from "../pages/Restuarant/UpdateFood";
 import Layout from "../components/Layout";
 import ContactForm from "../pages/Restuarant/Contact";
 import AboutUs from "../pages/Restuarant/About";
+import Wishlist from "../pages/Restuarant/Wishlist";
 
 export const Routes = Router([
   {
@@ -35,11 +36,11 @@ export const Routes = Router([
         element: <FoodList />, 
       },
       {
-        path: "profile",
+        path: "profile/:id",
         element: <ProfilePage />,
       },
       {
-        path: "edit-profile",
+        path: "edit-profile/:id",
         element: <EditProfilePage />,
       },
       {
@@ -66,6 +67,14 @@ export const Routes = Router([
       {
         path: "update/:id",
         element: <UpdateFood/>,
+      },
+       {
+        path: "users",
+        element: <UserList/>,
+      },
+       {
+        path: "wishlist",
+        element: <Wishlist/>,
       },
     ],
   },

@@ -120,7 +120,7 @@ export default function ContactForm() {
           </button>
         </form>
       </div>
-
+{/*
       <div className="flex gap-4">
         <button onClick={() => dispatch(addnumber())}>add number</button>
         <p>{number}</p>
@@ -146,6 +146,7 @@ export default function ContactForm() {
       </div>
 
       {/* Todo List */}
+      {/*
       <ul className="space-y-3">
         {data.length === 0 ? (
           <p className="text-gray-500 text-center">No tasks yet</p>
@@ -166,6 +167,7 @@ export default function ContactForm() {
           ))
         )}
       </ul>
+*/}
     </>
   );
 }

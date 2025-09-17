@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Edit, Trash2, Plus, Search } from "lucide-react";
+import { Edit, Trash2, Plus, Search, Heart, Star } from "lucide-react";
 import { useSelector } from "react-redux";
-import { Star } from "lucide-react";
-
+import toast from "react-hot-toast";
 const FoodList = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [wishlist, setWishlist] = useState([]); // ✅ wishlist state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -13,13 +13,13 @@ const FoodList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const token = useSelector((state) => state.auth.token);
-
-  console.log(token);
   const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.role === "admin";
-  const navigate = useNavigate();
+
+  // debounce for search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -28,20 +28,19 @@ const FoodList = () => {
     return () => clearTimeout(handler);
   }, [search]);
 
+  // ✅ Fetch restaurants
   const fetchRestaurants = async (page, searchText = "") => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
+      const res = await fetch(
         `${API_URL}/food/list?page=${page}&limit=5&search=${searchText}`,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      const data = await response.json();
+      const data = await res.json();
       if (data.success) {
         setRestaurants(data.food);
         setTotalPages(data.totalPages);
@@ -55,11 +54,73 @@ const FoodList = () => {
     }
   };
 
+  // ✅ Fetch wishlist
+  const fetchWishlist = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/v1/user/wishlist/get`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        setWishlist(data.items.map((item) => item._id)); // sirf IDs rakho
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchRestaurants(page, debouncedSearch);
+    fetchWishlist();
   }, [page, debouncedSearch]);
 
-  // 🔹 Delete handler
+  // ✅ Wishlist toggle
+  const handleAddToWishlist = async (id) => {
+    try {
+      let res;
+      if (wishlist.includes(id)) {
+        // remove
+        res = await fetch(`http://localhost:3000/api/v1/user/wishlist/remove/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          
+        }
+      
+      );
+        
+      } else {
+        // add
+        res = await fetch(`http://localhost:3000/api/v1/user/wishlist/add/${id}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+
+      if (!res.ok) throw new Error("Wishlist update failed");
+
+      // ✅ frontend state toggle
+      setWishlist((prev) =>
+        prev.includes(id)
+          ? prev.filter((item) => item !== id)
+          : [...prev, id]
+      );
+        if (wishlist.includes(id)) {
+      toast.success("Removed from wishlist");
+    } else {
+      toast.success("Added to wishlist");
+    }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ✅ Delete handler
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`${API_URL}/food/delete/${id}`, {
@@ -81,29 +142,21 @@ const FoodList = () => {
     }
   };
 
+  // ✅ UI
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
-
-  // 🔹 Filter restaurants by search (frontend side)
-  //  const filteredRestaurants = restaurants.filter((rest) =>
-  //   rest.title?.toLowerCase().includes(search.toLowerCase())
-  //  );
 
   return (
     <>
       <div className="min-h-screen bg-gray-100 rounded-tl-3xl rounded-tr-3xl">
-        {/* Header */}
         <div className="bg-[#37A9C8] text-white py-12 text-center rounded-tl-3xl rounded-tr-3xl">
-          <h1 className="text-5xl font-bold mb-2 font-dancing"
-       
-          >
-            Food Heaven
-          </h1>
+          <h1 className="text-5xl font-bold mb-2 font-dancing">Food Heaven</h1>
           <p className="text-lg max-w-xl mx-auto">
             Taste the finest dishes in town. Discover your favorite meals and
             enjoy every bite!
           </p>
         </div>
 
+        {/* Search + Add Food */}
         <div className="flex flex-col sm:flex-row justify-between items-center p-6 gap-4">
           <div className="flex items-center bg-white px-3 py-2 rounded-full shadow w-full sm:w-80">
             <Search className="text-gray-400 mr-2" size={18} />
@@ -113,7 +166,7 @@ const FoodList = () => {
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
-                setPage(1); // 🔹 Reset page jab bhi search change ho
+                setPage(1);
               }}
               className="flex-1 outline-none text-gray-700"
             />
@@ -128,8 +181,8 @@ const FoodList = () => {
           )}
         </div>
 
-        {/* Restaurant Grid */}
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {/* Grid */}
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {loading ? (
             <p className="col-span-full text-center text-gray-500">
               Loading...
@@ -138,7 +191,7 @@ const FoodList = () => {
             restaurants.map((rest) => (
               <div
                 key={rest._id}
-                className="bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+                className="relative bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden"
               >
                 {rest.imageurl ? (
                   <img
@@ -153,7 +206,7 @@ const FoodList = () => {
                 )}
                 <div className="p-4">
                   <h3 className="text-xl font-semibold mb-1">{rest.title}</h3>
-                 
+
                   <p className="text-gray-700 font-medium flex items-center gap-2">
                     Rating: {rest.rating || 0}
                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -166,11 +219,23 @@ const FoodList = () => {
                     >
                       View Details
                     </button>
+                    <button
+                      onClick={() => handleAddToWishlist(rest._id)}
+                      className="absolute top-5 right-1 px-1 py-1 rounded transition"
+                    >
+                      <Heart
+                        className={`w-6 h-6 ${
+                          wishlist.includes(rest._id)
+                            ? "fill-red-500 text-red-500"
+                            : "fill-black text-black"
+                        }`}
+                      />
+                    </button>
                     {isAdmin && (
                       <>
                         <button
                           onClick={() => navigate(`/app/update/${rest._id}`)}
-                          className="p-2 bg-[#37A9C8] text-white rounded-full  transition"
+                          className="p-2 bg-[#37A9C8] text-white rounded-full transition"
                           title="Update"
                         >
                           <Edit size={18} />
@@ -196,6 +261,7 @@ const FoodList = () => {
         </div>
       </div>
 
+      {/* Pagination */}
       <div className="flex justify-end items-center gap-4 mt-6 py-3">
         <button
           disabled={page === 1}

@@ -36,6 +36,8 @@ export default function Header() {
           <NavLink to="/app/home">Home</NavLink>
           <NavLink to="/app/about">About</NavLink>
           <NavLink to="/app/contact">Contact</NavLink>
+          <NavLink to="/app/users">Users</NavLink>
+          <NavLink to="/app/wishlist">Wishlist</NavLink>
           
         </div>
 
