@@ -44,7 +44,7 @@ export default function EditProfilePage() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await fetch(`http://localhost:3000/api/v1/user/get-user/${id}`, {
+        const res = await fetch(`${API_URL}/user/get-user/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
