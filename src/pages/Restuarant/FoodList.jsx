@@ -57,7 +57,7 @@ const FoodList = () => {
   // ✅ Fetch wishlist
   const fetchWishlist = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/v1/user/wishlist/get`, {
+      const res = await fetch(`${API_URL}/user/wishlist/get`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const FoodList = () => {
       let res;
       if (wishlist.includes(id)) {
         // remove
-        res = await fetch(`http://localhost:3000/api/v1/user/wishlist/remove/${id}`, {
+        res = await fetch(`${API_URL}/user/wishlist/remove/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ const FoodList = () => {
         
       } else {
         // add
-        res = await fetch(`http://localhost:3000/api/v1/user/wishlist/add/${id}`, {
+        res = await fetch(`${API_URL}/user/wishlist/add/${id}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
