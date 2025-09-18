@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -40,7 +41,7 @@ useEffect(() => {
         if (!res.ok) throw new Error("Failed to register");
         const data = await res.json();
         console.log("Registered:", data);
-        alert("Registration successful!");
+        toast("Registration successful!");
 
         resetForm();
          navigate("/login");

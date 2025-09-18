@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { setUser } from "../../redux/authSlice";
+import toast from "react-hot-toast";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -46,7 +47,7 @@ useEffect(() => {
         localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("user", JSON.stringify(data.user));
         dispatch(setUser({token:data.accessToken,user:data.user}))
-        alert("login successfully!");
+        toast("login successfully!");
 
         resetForm();
        navigate("/app/home");

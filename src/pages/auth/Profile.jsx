@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // ✅ useParams added
+import { useNavigate, useParams } from "react-router-dom"; 
 import { User, Mail, Shield } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-   const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,13 +29,13 @@ export default function ProfilePage() {
         const data = await res.json();
 
         if (data.success) {
-          setProfile(data.user); // ✅ set only user object
+          setProfile(data.user); 
         } else {
           setProfile(null);
         }
       } catch (err) {
         console.error(err);
-        alert("Error fetching profile!");
+        toast("Error fetching profile!");
       } finally {
         setLoading(false);
       }
@@ -49,7 +50,7 @@ export default function ProfilePage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 rounded-tl-3xl rounded-tr-3xl">
       <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-        {/* Avatar */}
+      
         <div className="flex flex-col items-center mb-6">
           <div className="w-24 h-24 rounded-full bg-[#37A9C8] text-white flex items-center justify-center text-3xl font-bold shadow-md">
             {profile.name?.charAt(0).toUpperCase()}
@@ -58,7 +59,7 @@ export default function ProfilePage() {
           <p className="text-gray-500 text-sm">{profile.email}</p>
         </div>
 
-        {/* Info Section */}
+       
         <div className="space-y-4">
           <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
             <User className="text-[#37A9C8]" size={20} />
