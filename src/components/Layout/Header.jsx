@@ -36,7 +36,7 @@ export default function Header() {
           <NavLink to="/app/home">Home</NavLink>
           <NavLink to="/app/about">About</NavLink>
           <NavLink to="/app/contact">Contact</NavLink>
-          {!user && (
+          {isAdmin && (
             <NavLink to="/app/users">Users</NavLink>
           )}
          

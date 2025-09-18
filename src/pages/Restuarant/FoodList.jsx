@@ -87,11 +87,7 @@ const FoodList = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          
-        }
-      
-      );
-        
+        });
       } else {
         // add
         res = await fetch(`${API_URL}/user/wishlist/add/${id}`, {
@@ -106,15 +102,13 @@ const FoodList = () => {
 
       // ✅ frontend state toggle
       setWishlist((prev) =>
-        prev.includes(id)
-          ? prev.filter((item) => item !== id)
-          : [...prev, id]
+        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
       );
-        if (wishlist.includes(id)) {
-      toast.success("Removed from wishlist");
-    } else {
-      toast.success("Added to wishlist");
-    }
+      if (wishlist.includes(id)) {
+        toast.success("Removed from wishlist");
+      } else {
+        toast.success("Added to wishlist");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -208,14 +202,21 @@ const FoodList = () => {
                   <h3 className="text-xl font-semibold mb-1">{rest.title}</h3>
 
                   <p className="text-gray-700 font-medium flex items-center gap-2">
-                    Rating: {rest.rating || 0}
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    Rating:
+                    <span className="flex items-center gap-1">
+                      {Array.from({ length: rest.rating || 0 }, (_, i) => (
+                        <Star
+                          key={i}
+                          className="w-4 h-4 text-yellow-300 fill-yellow-300"
+                        />
+                      ))}
+                    </span>
                   </p>
 
                   <div className="mt-4 flex flex-wrap gap-3">
                     <button
                       onClick={() => navigate(`/app/restaurant/${rest._id}`)}
-                      className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                      className="px-3 py-1 bg-[#37A9C8] text-white rounded  transition"
                     >
                       View Details
                     </button>
@@ -235,7 +236,7 @@ const FoodList = () => {
                       <>
                         <button
                           onClick={() => navigate(`/app/update/${rest._id}`)}
-                          className="p-2 bg-[#37A9C8] text-white rounded-full transition"
+                          className="p-2 bg-yellow-400 text-white rounded-full transition"
                           title="Update"
                         >
                           <Edit size={18} />

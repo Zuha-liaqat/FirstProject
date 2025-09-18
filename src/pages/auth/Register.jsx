@@ -41,7 +41,9 @@ useEffect(() => {
         const data = await res.json();
         console.log("Registered:", data);
         alert("Registration successful!");
+
         resetForm();
+         navigate("/login");
       } catch (err) {
         console.error(err);
         alert("Something went wrong!");
@@ -55,8 +57,8 @@ useEffect(() => {
         onSubmit={formik.handleSubmit}
         className="bg-white p-8 rounded-sm shadow-xl w-full max-w-md"
       >
-        <div className="items-center flex justify-center mb-5">
-        <img src="logo.png" alt="" className="w-8 h-8"/>
+          <div className="items-center flex justify-center mb-5">
+        <img src="logo.png" alt="" className="w-24 h-24"/>
         </div>
 
         {/* Name */}

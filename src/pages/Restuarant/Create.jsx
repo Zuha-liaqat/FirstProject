@@ -66,27 +66,27 @@ const CreateRestaurant = () => {
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl"
+            className="w-full px-4 py-3  rounded-xl bg-gray-50 border border-gray-300"
           />
           <input
             type="number"
             placeholder="Price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl"
           />
           <input
             type="number"
             placeholder="Rating"
             value={rating}
             onChange={(e) => setRating(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl"
           />
           <textarea
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 border rounded-xl"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl"
             rows="4"
           ></textarea>
 
@@ -104,7 +104,7 @@ const CreateRestaurant = () => {
               <img
                 src={URL.createObjectURL(image)}
                 alt="Preview"
-                className="w-44 h-44 object-cover rounded-xl border shadow"
+                className="w-44 h-44 object-cover rounded-xl  border border-gray-300 shadow"
               />
             </div>
           )}

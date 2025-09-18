@@ -6,6 +6,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+   const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
 
   useEffect(() => {

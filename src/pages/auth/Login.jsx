@@ -64,7 +64,7 @@ useEffect(() => {
         className="bg-white p-8 rounded-sm shadow-xl w-full max-w-md"
       >
         <div className="items-center flex justify-center mb-5">
-        <img src="logo.png" alt="" className="w-8 h-8"/>
+        <img src="logo.png" alt="" className="w-24 h-24"/>
         </div>
 
         <div className="mb-4">
