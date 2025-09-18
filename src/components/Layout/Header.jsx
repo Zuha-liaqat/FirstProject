@@ -36,7 +36,10 @@ export default function Header() {
           <NavLink to="/app/home">Home</NavLink>
           <NavLink to="/app/about">About</NavLink>
           <NavLink to="/app/contact">Contact</NavLink>
-          <NavLink to="/app/users">Users</NavLink>
+          {!user && (
+            <NavLink to="/app/users">Users</NavLink>
+          )}
+         
           <NavLink to="/app/wishlist">Wishlist</NavLink>
           
         </div>
@@ -53,7 +56,7 @@ export default function Header() {
             <DropdownMenuContent className="w-32 bg-white border-none">
               {/* Profile */}
               <DropdownMenuItem
-                onClick={() => navigate("/app/profile")}
+                onClick={() => navigate("app/profile/:id")}
                 className="cursor-pointer"
               >
                 Profile
