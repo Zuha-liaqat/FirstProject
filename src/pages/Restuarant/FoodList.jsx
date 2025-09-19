@@ -33,7 +33,7 @@ const FoodList = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `${API_URL}/food/list?page=${page}&limit=5&search=${searchText}`,
+        `${API_URL}/food/list?page=${page}&limit=4&search=${searchText}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -141,7 +141,7 @@ const FoodList = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100 rounded-tl-3xl rounded-tr-3xl">
+      <div className="min-h-screen bg-gray-100 rounded-tl-3xl rounded-tr-3xl p-5">
         <div className="bg-[#37A9C8] text-white py-12 text-center rounded-tl-3xl rounded-tr-3xl">
           <h1 className="text-5xl font-bold mb-2 font-dancing">Food Heaven</h1>
           <p className="text-lg max-w-xl mx-auto">
@@ -176,7 +176,7 @@ const FoodList = () => {
         </div>
 
         {/* Grid */}
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {loading ? (
             <p className="col-span-full text-center text-gray-500">
               Loading...
@@ -199,9 +199,33 @@ const FoodList = () => {
                   </div>
                 )}
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-1">{rest.title}</h3>
+                  {/* Title + Actions */}
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-xl font-semibold">{rest.title}</h3>
+                    <div className="flex gap-2">
+                      {isAdmin && (
+                        <>
+                          <button
+                            onClick={() => navigate(`/app/update/${rest._id}`)}
+                            className="p-2 bg-yellow-400 text-white rounded-full transition"
+                            title="Update"
+                          >
+                            <Edit size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(rest._id)}
+                            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                            title="Delete"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
 
-                  <p className="text-gray-700 font-medium flex items-center gap-2">
+                  {/* Rating */}
+                  <p className="text-gray-700 font-medium flex items-center gap-2 mt-1">
                     Rating:
                     <span className="flex items-center gap-1">
                       {Array.from({ length: rest.rating || 0 }, (_, i) => (
@@ -213,10 +237,11 @@ const FoodList = () => {
                     </span>
                   </p>
 
-                  <div className="mt-4 flex flex-wrap gap-3">
+                  {/* Wishlist + Details */}
+                  <div className="mt-4 flex justify-between items-center">
                     <button
                       onClick={() => navigate(`/app/restaurant/${rest._id}`)}
-                      className="px-3 py-1 bg-[#37A9C8] text-white rounded  transition"
+                      className="px-3 py-1 bg-[#37A9C8] text-white rounded transition"
                     >
                       View Details
                     </button>
@@ -232,24 +257,6 @@ const FoodList = () => {
                         }`}
                       />
                     </button>
-                    {isAdmin && (
-                      <>
-                        <button
-                          onClick={() => navigate(`/app/update/${rest._id}`)}
-                          className="p-2 bg-yellow-400 text-white rounded-full transition"
-                          title="Update"
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(rest._id)}
-                          className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-                          title="Delete"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </>
-                    )}
                   </div>
                 </div>
               </div>
