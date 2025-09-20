@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const CreateRestaurant = () => {
@@ -6,15 +6,17 @@ const CreateRestaurant = () => {
   const [price, setPrice] = useState("");
   const [rating, setRating] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null); // file store hogi
+  const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useSelector((state) => state.auth.token);
 
+  // ✅ file input ref
+  const fileInputRef = useRef(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // FormData banani hai
     const formData = new FormData();
     formData.append("title", title);
     formData.append("price", price);
@@ -28,17 +30,24 @@ const CreateRestaurant = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData, 
+        body: formData,
       });
 
       const result = await response.json();
       if (result.success) {
         setMessage(result.message);
+
+        // ✅ form reset
         setTitle("");
         setPrice("");
         setRating("");
         setDescription("");
         setImage(null);
+
+        // ✅ file input bhi reset
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       } else {
         setMessage(result.message);
       }
@@ -60,13 +69,13 @@ const CreateRestaurant = () => {
           </p>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5 h-">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <input
             type="text"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-3  rounded-xl bg-gray-50 border border-gray-300"
+            className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-300"
           />
           <input
             type="number"
@@ -94,6 +103,7 @@ const CreateRestaurant = () => {
           <input
             type="file"
             accept="image/*"
+            ref={fileInputRef}   // ✅ ref attach
             onChange={(e) => setImage(e.target.files[0])}
             className="w-full"
           />
@@ -104,7 +114,7 @@ const CreateRestaurant = () => {
               <img
                 src={URL.createObjectURL(image)}
                 alt="Preview"
-                className="w-44 h-44 object-cover rounded-xl  border border-gray-300 shadow"
+                className="w-44 h-44 object-cover rounded-xl border border-gray-300 shadow"
               />
             </div>
           )}
