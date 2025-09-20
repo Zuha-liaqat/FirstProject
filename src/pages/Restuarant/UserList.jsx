@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit } from "lucide-react"; 
-
+import toast from "react-hot-toast";
 export default function UserList() {
   const [users, setUsers] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
@@ -33,7 +33,7 @@ export default function UserList() {
       });
       const data = await res.json();
       if (data) {
-        alert("User deleted successfully");
+        toast("User deleted successfully");
         setUsers((prev) => prev.filter((item) => item._id !== id)); // ✅ fix id reference
       } else {
         alert(data.message);
