@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 const FoodList = () => {
   const [restaurants, setRestaurants] = useState([]);
-  const [wishlist, setWishlist] = useState([]); // ✅ wishlist state
+  const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");

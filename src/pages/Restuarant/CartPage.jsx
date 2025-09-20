@@ -58,6 +58,7 @@ const totalPrice = cartItems.reduce(
   if (orderPlaced) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-center">
+       
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-20 w-20 text-green-500 mb-4"
@@ -72,8 +73,9 @@ const totalPrice = cartItems.reduce(
             d="M5 13l4 4L19 7"
           />
         </svg>
+        
         <h1 className="text-2xl font-bold text-green-600">
-          🎉 Order Placed Successfully!
+           Order Placed Successfully!
         </h1>
         <p className="text-gray-600 mt-2">
           Thank you for your order. You will receive your food soon.

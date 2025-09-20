@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate,useParams } from "react-router-dom";
 import { User } from "lucide-react";
-
+import toast from "react-hot-toast";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function EditProfilePage() {
@@ -31,7 +31,7 @@ export default function EditProfilePage() {
         if (!res.ok) throw new Error("Failed to update profile");
         await res.json();
 
-        alert("Profile updated successfully!");
+        toast("Profile updated successfully!");
         navigate(`/app/profile/${id}`);
       } catch (err) {
         console.error(err);

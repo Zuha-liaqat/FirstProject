@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const UpdateFood = () => {
   const { id } = useParams();
@@ -66,7 +67,7 @@ const UpdateFood = () => {
 
       const data = await res.json();
       if (data.success) {
-        alert("Food updated successfully!");
+        toast("Food updated successfully!");
         
       } else {
         alert(data.message);
