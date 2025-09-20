@@ -28,7 +28,7 @@ const CreateRestaurant = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData, // ab JSON nahi, FormData send karna hai
+        body: formData, 
       });
 
       const result = await response.json();

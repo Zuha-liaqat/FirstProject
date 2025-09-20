@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Edit, Trash2, Plus, Search, Heart, Star } from "lucide-react";
 import { useSelector } from "react-redux";
+
 import toast from "react-hot-toast";
 const FoodList = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -126,7 +127,7 @@ const FoodList = () => {
 
       const data = await res.json();
       if (data.success) {
-        alert("Food deleted successfully!");
+        toast("Food deleted successfully!");
         setRestaurants((prev) => prev.filter((item) => item._id !== id));
       } else {
         alert(data.message);
